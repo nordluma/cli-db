@@ -1,10 +1,15 @@
-use sqlx::{migrate::MigrateDatabase, Connection, Sqlite, SqliteConnection};
+use sqlx::{migrate::MigrateDatabase, Connection, FromRow, Sqlite, SqliteConnection};
 
 use crate::args::Entry;
 
 const DB_URL: &str = "sqlite://cli.db";
 
-#[allow(unused)]
+#[derive(FromRow)]
+pub struct DbEntry {
+    pub id: String,
+    pub value: String,
+}
+
 pub struct Store {
     conn: SqliteConnection,
 }
@@ -66,8 +71,8 @@ impl Store {
         }
     }
 
-    pub async fn get_all(&mut self) -> sqlx::Result<Vec<Entry>> {
-        match sqlx::query_as::<_, Entry>("SELECT * FROM things")
+    pub async fn get_all(&mut self) -> sqlx::Result<Vec<DbEntry>> {
+        match sqlx::query_as::<_, DbEntry>("SELECT * FROM things")
             .fetch_all(&mut self.conn)
             .await
         {

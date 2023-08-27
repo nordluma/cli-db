@@ -1,5 +1,4 @@
 use clap::{Args, Parser, Subcommand};
-use sqlx::FromRow;
 
 #[derive(Debug, Parser)]
 #[command(author, version, about, long_about = None)]
@@ -13,9 +12,10 @@ pub enum Command {
     Add(Entry),
     Get { key: String },
     Remove { key: String },
+    Getall,
 }
 
-#[derive(Args, Debug, FromRow)]
+#[derive(Args, Debug)]
 pub struct Entry {
     pub key: String,
     pub value: String,
