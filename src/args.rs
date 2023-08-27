@@ -11,6 +11,8 @@ pub struct CliArgs {
 pub enum Command {
     /// Add an entry to the db
     Add(Entry),
+    /// Update an entry
+    Update(Entry),
     /// Retrieve a single entry by key
     Get {
         /// Key string
