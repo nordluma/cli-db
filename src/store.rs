@@ -41,8 +41,7 @@ impl Store {
         match sqlx::query(
             "CREATE TABLE IF NOT EXISTS things (
                 id TEXT PRIMARY KEY NOT NULL,
-                value TEXT NOT NULL
-                );",
+                value TEXT NOT NULL);",
         )
         .execute(conn)
         .await
