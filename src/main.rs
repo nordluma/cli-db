@@ -18,7 +18,8 @@ async fn main() {
             get_entry(store, &key).await;
         }
         Command::Remove { key } => {
-            println!("Deleting entry: {}", key)
+            println!("Deleting entry: {}", key);
+            delete_entry(store, &key).await;
         }
         Command::Getall => {
             get_all_entries(store).await;
@@ -51,5 +52,12 @@ async fn get_entry(mut store: Store, key: &str) {
             None => eprintln!("No entry found"),
         },
         Err(e) => eprintln!("Error: {}", e),
+    }
+}
+
+async fn delete_entry(mut store: Store, key: &str) {
+    match store.delete(key).await {
+        Ok(_) => eprintln!("Entry deleted"),
+        Err(e) => eprintln!("Could not delete entry: {}", e),
     }
 }
