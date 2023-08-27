@@ -1,7 +1,8 @@
 use clap::Parser;
 use cli_db::args::CliArgs;
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let cli = CliArgs::parse();
 
     match cli.commands {
