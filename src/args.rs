@@ -1,7 +1,7 @@
 use clap::{Args, Parser, Subcommand};
 
 #[derive(Debug, Parser)]
-#[command(author, version, about, long_about = None)]
+#[command(version, about, long_about = None)]
 pub struct CliArgs {
     #[command(subcommand)]
     pub commands: Command,
@@ -9,9 +9,19 @@ pub struct CliArgs {
 
 #[derive(Debug, Subcommand)]
 pub enum Command {
+    /// Add an entry to the db
     Add(Entry),
-    Get { key: String },
-    Remove { key: String },
+    /// Retrieve a single entry by key
+    Get {
+        /// Key string
+        key: String,
+    },
+    /// Delete an entry from db by key
+    Remove {
+        /// Key string
+        key: String,
+    },
+    /// Retrieve all keys
     Getall,
 }
 

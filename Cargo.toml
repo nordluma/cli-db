@@ -2,6 +2,8 @@
 name = "cli_db"
 version = "0.1.0"
 edition = "2021"
+authors = ["Max Nordlund"]
+description = "A cli tool to store key value pairs into a sqlite database"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
