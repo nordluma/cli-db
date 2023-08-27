@@ -14,7 +14,8 @@ async fn main() {
             create_entry(store, entry).await;
         }
         Command::Get { key } => {
-            println!("Retrieving value for: {}", key)
+            eprintln!("Retrieving value for: {}", key);
+            get_entry(store, &key).await;
         }
         Command::Remove { key } => {
             println!("Deleting entry: {}", key)
@@ -39,6 +40,16 @@ async fn get_all_entries(mut store: Store) {
                 println!("[{}]: {}", entry.id, entry.value)
             }
         }
+        Err(e) => eprintln!("Error: {}", e),
+    }
+}
+
+async fn get_entry(mut store: Store, key: &str) {
+    match store.get_entry(key).await {
+        Ok(opt_entry) => match opt_entry {
+            Some(entry) => println!("[{}]: {}", entry.id, entry.value),
+            None => eprintln!("No entry found"),
+        },
         Err(e) => eprintln!("Error: {}", e),
     }
 }
