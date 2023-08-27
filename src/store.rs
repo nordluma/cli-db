@@ -46,10 +46,7 @@ impl Store {
         .execute(conn)
         .await
         {
-            Ok(res) => {
-                dbg!("result: {:?}", res);
-                Ok(())
-            }
+            Ok(_) => Ok(()),
             Err(e) => Err(e),
         }
     }
