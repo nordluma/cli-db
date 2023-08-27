@@ -67,7 +67,7 @@ impl Store {
     }
 
     pub async fn get_all(&mut self) -> sqlx::Result<Vec<Entry>> {
-        match sqlx::query_as::<_, Entry>("SELECT * FORM things")
+        match sqlx::query_as::<_, Entry>("SELECT * FROM things")
             .fetch_all(&mut self.conn)
             .await
         {
