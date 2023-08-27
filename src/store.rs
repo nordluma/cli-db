@@ -94,4 +94,15 @@ impl Store {
             Err(e) => Err(e),
         }
     }
+
+    pub async fn delete(&mut self, key: &str) -> sqlx::Result<()> {
+        match sqlx::query("DELETE FROM things WHERE id = $1")
+            .bind(key)
+            .execute(&mut self.conn)
+            .await
+        {
+            Ok(_) => Ok(()),
+            Err(e) => Err(e),
+        }
+    }
 }
