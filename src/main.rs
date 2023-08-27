@@ -1,3 +1,8 @@
+use clap::Parser;
+use cli_db::args::CliArgs;
+
 fn main() {
-    println!("Hello, world!");
+    let cli = CliArgs::parse();
+
+    println!("{:?}", cli);
 }
