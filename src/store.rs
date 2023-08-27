@@ -91,6 +91,23 @@ impl Store {
         }
     }
 
+    pub async fn update(&mut self, entry: Entry) -> sqlx::Result<DbEntry> {
+        match sqlx::query_as::<_, DbEntry>(
+            "UPDATE things
+            SET value = $1
+            WHERE id = $2
+            RETURNING *",
+        )
+        .bind(entry.value)
+        .bind(entry.key)
+        .fetch_one(&mut self.conn)
+        .await
+        {
+            Ok(entry) => Ok(entry),
+            Err(e) => Err(e),
+        }
+    }
+
     pub async fn delete(&mut self, key: &str) -> sqlx::Result<()> {
         match sqlx::query("DELETE FROM things WHERE id = $1")
             .bind(key)
