@@ -10,13 +10,8 @@ pub struct CliArgs {
 #[derive(Debug, Subcommand)]
 pub enum Command {
     Add(Entry),
-    Get(Key),
-    Remove(Entry),
-}
-
-#[derive(Args, Debug)]
-pub struct Key {
-    key: String,
+    Get { key: String },
+    Remove { key: String },
 }
 
 #[derive(Args, Debug)]
