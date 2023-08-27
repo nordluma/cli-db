@@ -80,4 +80,18 @@ impl Store {
             Err(e) => Err(e),
         }
     }
+
+    pub async fn get_entry(&mut self, key: &str) -> sqlx::Result<Option<DbEntry>> {
+        match sqlx::query_as::<_, DbEntry>(
+            "SELECT * FROM things
+            WHERE id = $1",
+        )
+        .bind(key)
+        .fetch_optional(&mut self.conn)
+        .await
+        {
+            Ok(entry) => Ok(entry),
+            Err(e) => Err(e),
+        }
+    }
 }
