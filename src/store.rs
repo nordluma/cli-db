@@ -65,4 +65,14 @@ impl Store {
             Err(e) => Err(e),
         }
     }
+
+    pub async fn get_all(&mut self) -> sqlx::Result<Vec<Entry>> {
+        match sqlx::query_as::<_, Entry>("SELECT * FORM things")
+            .fetch_all(&mut self.conn)
+            .await
+        {
+            Ok(entries) => Ok(entries),
+            Err(e) => Err(e),
+        }
+    }
 }
