@@ -16,6 +16,6 @@ pub enum Command {
 
 #[derive(Args, Debug)]
 pub struct Entry {
-    key: String,
-    value: String,
+    pub key: String,
+    pub value: String,
 }
