@@ -1,8 +1,11 @@
 use clap::Parser;
+
 use cli_db::args::CliArgs;
+use cli_db::store::Store;
 
 #[tokio::main]
 async fn main() {
+    let store = Store::init().await;
     let cli = CliArgs::parse();
 
     match cli.commands {
