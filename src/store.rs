@@ -1,5 +1,7 @@
 use sqlx::{migrate::MigrateDatabase, Connection, Sqlite, SqliteConnection};
 
+use crate::args::Entry;
+
 const DB_URL: &str = "sqlite://cli.db";
 
 #[allow(unused)]
@@ -44,6 +46,22 @@ impl Store {
                 dbg!("result: {:?}", res);
                 Ok(())
             }
+            Err(e) => Err(e),
+        }
+    }
+
+    pub async fn insert(&mut self, entry: Entry) -> sqlx::Result<bool> {
+        match sqlx::query(
+            "INSERT INTO things (id, value)
+                          VALUES ($1, $2)
+                          RETURNING *",
+        )
+        .bind(entry.key)
+        .bind(entry.value)
+        .fetch_one(&mut self.conn)
+        .await
+        {
+            Ok(_) => Ok(true),
             Err(e) => Err(e),
         }
     }
