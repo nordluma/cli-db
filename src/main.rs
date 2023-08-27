@@ -1,6 +1,6 @@
 use clap::Parser;
 
-use cli_db::args::{CliArgs, Entry};
+use cli_db::args::{CliArgs, Command, Entry};
 use cli_db::store::Store;
 
 #[tokio::main]
@@ -9,17 +9,17 @@ async fn main() {
     let cli = CliArgs::parse();
 
     match cli.commands {
-        cli_db::args::Command::Add(entry) => {
+        Command::Add(entry) => {
             eprintln!("Adding entry: {:?}", entry);
             create_entry(store, entry).await;
         }
-        cli_db::args::Command::Get { key } => {
+        Command::Get { key } => {
             println!("Retrieving value for: {}", key)
         }
-        cli_db::args::Command::Remove { key } => {
+        Command::Remove { key } => {
             println!("Deleting entry: {}", key)
         }
-        cli_db::args::Command::Getall => {
+        Command::Getall => {
             get_all_entries(store).await;
         }
     }
