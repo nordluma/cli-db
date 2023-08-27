@@ -2,6 +2,7 @@ use sqlx::{migrate::MigrateDatabase, Connection, Sqlite, SqliteConnection};
 
 const DB_URL: &str = "sqlite://cli.db";
 
+#[allow(unused)]
 pub struct Store {
     conn: SqliteConnection,
 }
@@ -9,7 +10,11 @@ pub struct Store {
 impl Store {
     pub async fn init() -> Result<Self, sqlx::Error> {
         Store::create_db_if_not_exist().await;
-        let conn = SqliteConnection::connect(DB_URL).await?;
+        let mut conn = SqliteConnection::connect(DB_URL).await?;
+
+        if let Err(e) = Store::create_table(&mut conn).await {
+            panic!("Could not create table: {}", e)
+        };
 
         Ok(Store { conn })
     }
@@ -22,6 +27,24 @@ impl Store {
                 Ok(_) => eprintln!("Database created"),
                 Err(e) => panic!("Error: {}", e),
             }
+        }
+    }
+
+    async fn create_table(conn: &mut SqliteConnection) -> sqlx::Result<()> {
+        match sqlx::query(
+            "CREATE TABLE IF NOT EXISTS things (
+                id TEXT PRIMARY KEY NOT NULL,
+                value TEXT NOT NULL
+                );",
+        )
+        .execute(conn)
+        .await
+        {
+            Ok(res) => {
+                dbg!("result: {:?}", res);
+                Ok(())
+            }
+            Err(e) => Err(e),
         }
     }
 }

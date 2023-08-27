@@ -5,7 +5,7 @@ use cli_db::store::Store;
 
 #[tokio::main]
 async fn main() {
-    let store = Store::init().await;
+    let _store = Store::init().await;
     let cli = CliArgs::parse();
 
     match cli.commands {
