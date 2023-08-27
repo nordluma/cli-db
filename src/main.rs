@@ -24,6 +24,9 @@ async fn main() {
         Command::Getall => {
             get_all_entries(store).await;
         }
+        Command::Update(entry) => {
+            update_entry(store, entry).await;
+        }
     }
 }
 
@@ -52,6 +55,16 @@ async fn get_entry(mut store: Store, key: &str) {
             None => eprintln!("No entry found"),
         },
         Err(e) => eprintln!("Error: {}", e),
+    }
+}
+
+async fn update_entry(mut store: Store, entry: Entry) {
+    match store.update(entry).await {
+        Ok(entry) => {
+            eprintln!("Value updated");
+            println!("[{}]: {}", entry.id, entry.value);
+        }
+        Err(e) => eprintln!("Could not update entry: {}", e),
     }
 }
 
